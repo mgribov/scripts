@@ -1,0 +1,5 @@
+A simple PHP script to add new domains.
+Will create a master named.conf entry, a slave named.conf entry and main zone file, all based on templates in tpl/
+
+Usually, you would rsync the locally generated slave file with remote slave servers and restart BIND on them automatically.
+

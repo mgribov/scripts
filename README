@@ -1,0 +1,7 @@
+A collection of short perl/shell scripts 
+
+- ssh-bruteforce-notify -- notifies abuse contact for IP network which tries to brute-force your FreeBSD SSH server
+
+- dyn-update -- uses nsupdate utility for dyndns.org-style DNS updates with keys
+
+- domain-add -- script to add new DNS zone files

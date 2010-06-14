@@ -1,0 +1,26 @@
+ssh_bruteforce_notify.pl
+
+WARNING: this tool is abusive. If your machine was bruteforced 1000 times from the same IP, the abuse contact WILL GET 
+1000 EMAILS.
+To mitigate, you can use pf tarpit to block source IP if it connects too many times to SSH port:
+/etc/pf.conf:
+table <tarpit> persist
+pass in quick on $ext inet proto tcp from any to <finn> port  22  flags S/SA modulate state (max-src-conn-rate 8/60, 
+overload <tarpit> flush global)
+
+
+Parses security emails from FreeBSD periodic(8) to find all SSH bruteforce attempts.
+Once found, the script will send out an email to an abuse contact for source IP address - PER BRUTEFORCE ATTEMPT.
+The contact is found through whois utility.
+
+
+To use:
+Put following into ~/.procmailrc for the periodic recipient (usually root):
+PROCMAILDIR=$HOME/.procmail
+INCLUDERC=$PROCMAILDIR/rc.ssh_bruteforce
+
+Put the following into $PROCMAILDIR/rc.ssh_bruteforce
+:0c
+* ^Subject:.*security*
+| /path/to/ssh_bruteforce_notify.pl
+

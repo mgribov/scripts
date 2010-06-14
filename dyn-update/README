@@ -1,0 +1,29 @@
+Provides easy way to dynamically change ip for myhost.domain.com from cron (tested on FreeBSD)
+
+Quick howto:
+1. Generate the keypair:
+dnssec-keygen -a HMAC-SHA512 -b 512 -n HOST myhost.domain.com 
+
+2. Configure BIND named.conf on the DNS server:
+Look at the either of the genrated files (.private and .key), you will see a random string of characters, this is your secret.
+
+Add this key to your named.conf:
+key myhost.domain.com. {
+    algorithm hmac-md5;
+    secret "secret";
+};
+
+Edit zone stanza in your named.conf for this domain so it looks like this:
+zone "domain.com" {
+    type master;
+    file "master/db.domain.com";
+    allow-update { key myhost.domain.com; };
+};
+
+NOTE: after you do this, you CANNOT edit db.domain.com zone by hand anymore - nsupdate creates a db.domain.com.jnl 
+file which contains the journal of changes and is maintaied automatically.
+
+3. Add following to crontab on the dynamic host:
+0       *       *       *       *       cd /path/to/nsupdate && sh nsupdate.sh
+
+
