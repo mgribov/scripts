@@ -144,9 +144,11 @@ function call_curl($url, $method = 'GET', $postfields = false) {
     $header[] = "Accept-Language: en-us,en;q=0.5";
     $header[] = "Pragma: "; // browsers keep this blank.
 
-    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
     if (strtoupper($method) == 'POST') {
+        curl_setopt($ci, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
+    } elseif ($method != 'GET') {
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
     }
 
     curl_setopt($curl,CURLOPT_COOKIEJAR, $cookiefile);
