@@ -145,7 +145,7 @@ function call_curl($url, $method = 'GET', $postfields = false) {
     $header[] = "Pragma: "; // browsers keep this blank.
 
     if (strtoupper($method) == 'POST') {
-        curl_setopt($ci, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
     } elseif ($method != 'GET') {
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
